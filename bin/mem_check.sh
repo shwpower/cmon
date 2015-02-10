@@ -5,14 +5,14 @@
 # Author: 		Wei.Shen 
 # Status: 		Development
 # Version		v1.0
-# Description: 	Check the Memory utlization with sar
+# Description: 	Check the Memory utlization 
 #				Get the warning & critical threshold ,
 #						and warning & critical mail receiver
 #						from config file(cfg/*.cfg)
 #			Configure sample:
 #			ITEM	NAME	FLAG	WARNING	CRITICL	WARNING_MAIL CRITICAL_MAIL_RCV
-#			mem		ram		<		60		90		sysadmin.mail	datacenter.mail
-#			mem		swap	<		10		40		sysadmin.mail	datacenter.mail
+#			mem	ram	<	60	90	sysadmin.mail	datacenter.mail
+#			mem	swap	<	10	40	sysadmin.mail	datacenter.mail
 #
 # History:		
 #	Feb 10 2015 	Wei		v1.0	Creation 
