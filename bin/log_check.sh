@@ -68,7 +68,7 @@ do
 			if [[ $SIZE1 -gt $SIZE2 ]];then
 				# The log file has update compared with last time
 				# Get the new character from last time
-				NEWC=`expr $SIZE1 - $SIZE2`	
+				NEWC=$(expr $SIZE1 - $SIZE2)	
 				tail -${NEWC}c $N >$TEMPF2
 			else
 				# The logfile was trucated or one new file 
@@ -76,49 +76,49 @@ do
 			fi
 			## Intiniate the KEYS, FLAG
 			FLAG=0; KEYS=""
+       			
        		## For Critical Filter string
        		egrep -i -s -f $SCFGDIR/$C $TEMPF2
        		if [ $? -eq 0 ];then
-           	    while read ERRKEY
-                do
-               	    grep -i "$ERRKEY" $TEMPF2 >/dev/null 
-              	    if [ "$?" -eq 0 ];then
-                        print_msg "Pattern $(echo $ERRKEY|tr -s ' ' '_') found in $N."
-                        FLAG=1
-                        KEYS=`echo "$ERRKEY,$KEYS"`
-               	    fi
-           	    done < $SCFGDIR/$C
-	            # Match the pattern string in log file
-           	    if [ "$FLAG" == "1" ]; then
-	                send_mail $TEMPF2 $MAIL_SENDER "Major ALARM $(HOST) $(basename $N) ($KEYS) " $CM
-	            fi
+           	   	while read ERRKEY
+               	do
+                	grep -i "$ERRKEY" $TEMPF2 >/dev/null 
+                	if [ "$?" -eq 0 ];then
+                   		print_msg "Pattern $(echo $ERRKEY|tr -s ' ' '_') found in $N."
+                   		FLAG=1
+                   		KEYS=`echo "$ERRKEY,$KEYS"`
+                	fi
+           	 	done < $SCFGDIR/$C
+	          	# Match the pattern string in log file
+           	  	if [ "$FLAG" == "1" ]; then
+	               	send_mail $TEMPF2 $MAIL_SENDER "Major ALARM $(HOST) $(basename $N) ($KEYS) " $CM
+	           	fi
 					
-	            ##Clean up the var FLAG, KEYS
-	            FLAG=0
-	            KEYS=""
-	         else
-                ## For Warining Filter string
-                egrep -i -s -f $SCFGDIR/$W $TEMPF2
-                if [ $? -eq 0 ]; then
-                    while read ERRKEY
-                    do
-        			    grep -i "$ERRKEY" $TEMPF2 >/dev/null 
-               		    if [ "$?" -eq 0 ];then
-                       		echo "Pattern $(echo $ERRKEY|tr -s ' ' '_') found in $N." >>$LOGFILE
-				            FLAG=1
-                           	KEYS=`echo "$ERRKEY,$KEYS"`
-               		    fi
-       		        done  < $SCFGDIR/$W  
-		        fi
-		        # Match the pattern string in log file
-		        if [ "$FLAG" == "1" ]; then
-			        send_mail $TEMPF2 $MAIL_SENDER "Warning ALARM $HOST $(basename $N) ($KEYS) " $WM
-               	fi
+	           	##Clean up the var FLAG, KEYS
+	           	FLAG=0
+	           	KEYS=""
+	        else
+               	## For Warining Filter string
+               	egrep -i -s -f $SCFGDIR/$W $TEMPF2
+               	if [ $? -eq 0 ]; then
+                   	while read ERRKEY
+                   	do
+        		    	grep -i "$ERRKEY" $TEMPF2 >/dev/null 
+            	    	if [ "$?" -eq 0 ];then
+                   			echo "Pattern $(echo $ERRKEY|tr -s ' ' '_') found in $N." >>$LOGFILE
+			            	FLAG=1
+                       		KEYS=`echo "$ERRKEY,$KEYS"`
+            	    	fi
+       		       	done  < $SCFGDIR/$W  
+		       	fi
+		       	# Match the pattern string in log file
+		       	if [ "$FLAG" == "1" ]; then
+			       	send_mail $TEMPF2 $MAIL_SENDER "Warning ALARM $HOST $(basename $N) ($KEYS) " $WM
+            	fi
 
-               	##Clean up the var FLAG, KEYS
-               	FLAG=0
-               	KEYS=""
-
+            	##Clean up the var FLAG, KEYS
+            	FLAG=0
+            	KEYS=""
 	        fi
         fi
         # Record the file to temporary file
@@ -126,6 +126,7 @@ do
     fi
 
     info_msg "No pattern from ($W & $C) match logfile ${N}"
+    
 done < $VARDIR/$PN.$$
 
 rm $VARDIR/${PN}.$$
