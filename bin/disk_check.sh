@@ -7,8 +7,8 @@
 # Version		v1.0
 # Description: 	Check the Memory utlization 
 #				Get the warning & critical threshold ,
-#						and warning & critical mail receiver
-#						from config file(cfg/*.cfg)
+#				and warning & critical mail receiver
+#				from config file(cfg/*.cfg)
 #			Configure sample:
 #			ITEM	NAME	FLAG	WARNING	CRITICL	WARNING_MAIL CRITICAL_MAIL_RCV
 #			fs	/	<	60	90	sysadmin.mail	datacenter.mail
